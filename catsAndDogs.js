@@ -31,9 +31,9 @@
     const price_ajaxKeys = {}
     const result = {}
 
-    // {"0.4 кг" : {ajaxKey : "42"} }
+    // {0.4 кг : {ajaxKey : "42"} }
     document.querySelectorAll("span.input_type_radio").forEach(item => {
-        const dimensity = item.innerText
+        const dimensity = item.innerText.trim()
         const ajaxKey = item.querySelector("input").getAttribute("value")
 
         price_ajaxKeys[ dimensity ] = {
@@ -41,7 +41,7 @@
         }
     })
 
-    // {"0.4 кг" : {price : "148 гр"} }
+    // {0.4 кг : {price : "148 гр"} }
     for (const [key, value] of Object.entries(price_ajaxKeys)) {
         fetch(getAjaxByKey(value["ajaxKey"]))
              .then(response => response.json())
