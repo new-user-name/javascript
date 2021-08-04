@@ -1,3 +1,4 @@
+// https://3rifa.com.ua/cats/korm/korm-mjau-vkusnoe-mjasco-dlja-koshek
 // Вкусное мясцо
 (() => {
 
@@ -19,7 +20,8 @@
 })()
 
 
-// Роял Канин EXIGENT Корм для кошек, привередливых к ВКУСУ продукта
+// https://101dalmatin.com/koshki/korm-dlya-koshek/royal-kanin/povsednevnye/royal-kanin-exigent-korm-dlya-koshek-priveredlivykh-k-vkusu-produkta.html
+// Роял Канин EXIGENT Корм для кошек, привередливых к ВКУСУ продукта SIMPLE BUT WRONG
 (() => {
 
     // do not click on all radio buttons, crawl all possible ajax queries instead
@@ -50,4 +52,38 @@
 
     console.log(result)
 
+})()
+
+
+// Роял Канин EXIGENT Корм для кошек, привередливых к ВКУСУ продукта COMPLEX BUT IDIOMATIC
+(async () => {
+
+    // do not click on all radio buttons, crawl all possible ajax queries instead
+    function getAjaxByKey(key){
+        // this address could be extracted from the page
+        return "https://101dalmatin.com/component/jshopping/product/ajax_attrib_select_and_price/251.html?ajax=1&Itemid=0&change_attr=4&qty=1&attr%5B4%5D=" + key
+    }
+
+    const price_ajaxKeys = {}
+    const result = {}
+
+    // {0.4 кг : {ajaxKey : "42"} }
+    document.querySelectorAll("span.input_type_radio").forEach(item => {
+        const dimensity = item.innerText.trim()
+        const ajaxKey = item.querySelector("input").getAttribute("value")
+
+        price_ajaxKeys[ dimensity ] = {
+            ajaxKey,
+        }
+    })
+
+    // {0.4 кг : {price : "148 гр"} }
+   
+    for (const [key, value] of Object.entries(price_ajaxKeys)) {
+        let response = await fetch(getAjaxByKey(value["ajaxKey"]))
+        let json = await response.json();
+        result[key] = {price : json.price}
+    }
+    
+    console.log(result);
 })()
